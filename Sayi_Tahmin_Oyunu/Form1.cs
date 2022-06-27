@@ -17,6 +17,54 @@ namespace Sayi_Tahmin_Oyunu
         {
             InitializeComponent();
         }
+        #region Kontrol
+        public void KontrolEt()
+        {
+            try
+            {
+                bool result = rndtxt.Text == txtTahmin.Text ? KontrolTrue() : KontrolFalse();
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Lütfen sadece sayı giriniz.", "Hata..!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        private bool KontrolFalse()
+        {
+            bool deg = (int.Parse(txtTahmin.Text) > int.Parse(rndtxt.Text)) ? TahminK() : TahminB();
+            hak_text.Text = Convert.ToString(deger);
+            if (deger == 0)
+            {
+                Btn_sorgula.Text = "CEVAP == " + rndtxt.Text;
+            }
+            return true;
+        }
+        private bool KontrolTrue()
+        {
+            TahminD();
+            hak_text.Text = Convert.ToString(deger);
+            YeniOyun();
+            return true;
+        }
+        private void TahminD()
+        {
+            sonuc_listesi.Items.Add("Tebrikler ==> Tahmininiz : " + txtTahmin.Text + " => [ Tahmininizi doğru ]");
+            deger--;
+        }
+        private bool TahminB()
+        {
+            sonuc_listesi.Items.Add("Hatalı ==> Tahmininiz : " + txtTahmin.Text + " => [ Tahmininizi büyültün ]");
+            deger--;
+            return true;
+        }
+        private bool TahminK()
+        {
+            sonuc_listesi.Items.Add("Hatalı ==> Tahmininiz : " + txtTahmin.Text + " => [ Tahmininizi küçültün ]");
+            deger--;
+            return true;
+        }
+        #endregion
+
         private void Form1_Load(object sender, EventArgs e)
         {
             SayiUret();
@@ -40,43 +88,6 @@ namespace Sayi_Tahmin_Oyunu
                 }
             }
         }
-
-        public void KontrolEt()
-        {
-            try
-            {
-                if (rndtxt.Text == txtTahmin.Text)
-                {
-
-                    sonuc_listesi.Items.Add("Tebrikler ==> Tahmininiz : " + txtTahmin.Text + " => [ Tahmininizi doğru ]");
-                    deger--;
-                    hak_text.Text = Convert.ToString(deger);
-                    YeniOyun();
-                }
-                else
-                {
-                    if (int.Parse(txtTahmin.Text) > int.Parse(rndtxt.Text))
-                    {
-                        sonuc_listesi.Items.Add("Hatalı ==> Tahmininiz : " + txtTahmin.Text + " => [ Tahmininizi küçültün ]");
-                        deger--;
-                    }
-                    else if (int.Parse(txtTahmin.Text) < int.Parse(rndtxt.Text))
-                    {
-                        sonuc_listesi.Items.Add("Hatalı ==> Tahmininiz : " + txtTahmin.Text + " => [ Tahmininizi büyültün ]");
-                        deger--;
-                    }
-                    hak_text.Text = Convert.ToString(deger);
-                    if (deger == 0)
-                    {
-                        Btn_sorgula.Text = "Tahmin = " + rndtxt.Text;
-                    }
-                }
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("Lütfen sadece sayı giriniz.", "Hata..!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
         private void YeniOyun()
         {
             if (MessageBox.Show("Kazandınız;\nYeni oyuna başlamak istermisiniz ?", "Tebrikler..!", MessageBoxButtons.YesNo, MessageBoxIcon.Asterisk) == DialogResult.Yes)
@@ -96,7 +107,6 @@ namespace Sayi_Tahmin_Oyunu
         {
             Application.Exit();
         }
-
         private void SayiUret()
         {
             Random rnd = new Random();
